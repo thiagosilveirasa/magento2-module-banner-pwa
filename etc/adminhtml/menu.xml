@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add 
+            id="ThiagoSilveira_BannerPWA::banner_pwa_main" 
+            title="Banners for PWA" 
+            translate="title" 
+            module="ThiagoSilveira_BannerPWA" 
+            sortOrder="40" 
+            parent="Magento_Backend::content" 
+            resource="ThiagoSilveira_BannerPWA::banner_pwa_main" />
+
+        <add 
+            id="ThiagoSilveira_BannerPWA::banner_pwa" 
+            title="Banners" 
+            translate="title" 
+            module="ThiagoSilveira_BannerPWA" 
+            sortOrder="10" 
+            parent="ThiagoSilveira_BannerPWA::banner_pwa_main" 
+            action="bannerpwa/banner" 
+            resource="ThiagoSilveira_BannerPWA::banner" />
+    </menu>
+</config>

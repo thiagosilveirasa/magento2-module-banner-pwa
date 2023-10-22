@@ -1,0 +1,57 @@
+{
+    "banner_pwa": {
+        "column": {
+            "banner_id": true,
+            "name": true,
+            "title": true,
+            "image": true,
+            "url": true,
+            "newtab": true,
+            "position": true,
+            "display_on": true,
+            "display_on_page": true,
+            "display_on_id": true,
+            "is_active": true,
+            "sort_order": true,
+            "from_date": true,
+            "to_date": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "BANNER_PWA_POSITION": true,
+            "BANNER_PWA_NAME_POSITION_TITLE": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "banner_pwa_customer_group": {
+        "column": {
+            "banner_id": true,
+            "customer_group_id": true
+        },
+        "index": {
+            "BANNER_PWA_CUSTOMER_GROUP_CUSTOMER_GROUP_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BANNER_PWA_STORE_BANNER_ID_BANNER_PWA_BANNER_ID": true,
+            "BANNER_PWA_CUSTOMER_GROUP_CUSTOMER_GROUP_ID_CUSTOMER_GROUP_CUSTOMER_GROUP_ID": true
+        }
+    },
+    "banner_pwa_store": {
+        "column": {
+            "banner_id": true,
+            "store_id": true
+        },
+        "index": {
+            "BANNER_PWA_STORE_STORE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BANNER_PWA_STORE_BANNER_ID_BANNER_PWA_BANNER_ID": true,
+            "BANNER_PWA_STORE_STORE_ID_STORE_STORE_ID": true
+        }
+    }
+}

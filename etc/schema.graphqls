@@ -1,0 +1,71 @@
+type Query {
+    banners (
+        filters: BannerFilterInput @doc(description: "Identifies which Banner filter inputs to search.")
+        pageSize: Int = 20 @doc(description: "The maximum number of pickup locations to return at once. The attribute is optional.")
+        currentPage: Int = 1 @doc(description: "Specifies which page of results to return. The default value is 1.") 
+    ): Banners 
+    @resolver(class: "ThiagoSilveira\\BannerPWA\\Model\\Resolver\\Banners") 
+    @doc(description: "The Banner query returns information about Banners") 
+    @cache(cacheIdentity: "ThiagoSilveira\\BannerPWA\\Model\\Resolver\\Banner\\Identity")
+}
+
+type Banners @doc(description: "Banners information") {
+    items: [Banner] @doc(description: "List of banners")
+    total_count: Int @doc(description: "The number of banners returned.")
+    page_info: SearchResultPageInfo @doc(description: "An object that includes the `page_info` and `currentPage` values specified in the query.")
+}
+
+interface ProductInterface {
+    banners: [Banner] 
+    @resolver(class: "ThiagoSilveira\\BannerPWA\\Model\\Resolver\\ProductBanners")
+    @doc(description: "List of banners for product")
+    @cache(cacheIdentity: "ThiagoSilveira\\BannerPWA\\Model\\Resolver\\Banner\\Identity")
+}
+
+interface CategoryInterface {
+    banners: [Banner] 
+    @resolver(class: "ThiagoSilveira\\BannerPWA\\Model\\Resolver\\CategoryBanners")
+    @doc(description: "List of banners for category")
+    @cache(cacheIdentity: "ThiagoSilveira\\BannerPWA\\Model\\Resolver\\Banner\\Identity")
+}
+
+type CmsPage {
+    banners: [Banner] 
+    @resolver(class: "ThiagoSilveira\\BannerPWA\\Model\\Resolver\\CmsPageBanners")
+    @doc(description: "List of banners for CMS Page")
+    @cache(cacheIdentity: "ThiagoSilveira\\BannerPWA\\Model\\Resolver\\Banner\\Identity")
+}
+
+type Banner @doc(description: "Defines all Banner information") {
+    id: Int @doc(description: "Banner ID.")
+    name: String @doc(description: "Banner name.")
+    position: String @doc(description: "Banner position.")
+    display_on_page: DisplayOnPageTypeEnum @doc(description: "Banner display on page.")
+    display_on_id: String @doc(description: "Banner display on id.")
+    position: String @doc(description: "Banner position.")
+    title: String @doc(description: "Banner title.")
+    image: String @doc(description: "Banner image.")
+    url: String @doc(description: "Banner Url.")
+    newtab: Boolean @doc(description: "Open url in a new tab.")
+    sort_order: Int @doc(description: "Banner Sort Order.")
+}
+
+input BannerFilterInput  @doc(description: "BannerFilterInput defines the filters to be used in the search.")
+{
+    position: String @doc(description: "Position where the banners will be displayed")
+    display_on: DisplayOnFilterInput @doc(description: "Filter used to search for banners for a specific page.")
+}
+
+input DisplayOnFilterInput  @doc(description: "DisplayOnFilterInput to be used to search for banners for a specific page.")
+{
+    page: DisplayOnPageTypeEnum! @doc(description: "Page where the banner will be displayed.")
+    id: String! @doc(description: "Entity ID of the page where the banner will be displayed or the keyword of custom pages.")
+}
+
+enum DisplayOnPageTypeEnum @doc(description: "This enumeration defines the display on page type.") {
+    ALL_PAGES
+    PRODUCT
+    CATEGORY
+    PAGE
+    CUSTOM
+}

@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="banner_pwa" resource="default" engine="innodb" comment="Banner Table">
+        <column xsi:type="int" name="banner_id" unsigned="false" nullable="false" identity="true"
+            comment="Entity ID"/>
+        <column xsi:type="varchar" name="name" nullable="false" length="255" 
+            comment="Banner Name"/>
+        <column xsi:type="varchar" name="title" nullable="false" length="255" 
+            comment="Banner Title"/>
+        <column xsi:type="varchar" name="image" length="255" 
+            comment="Banner Image"/>
+        <column xsi:type="smallint" name="newtab" unsigned="false" nullable="false" identity="false" default="0" 
+            comment="Open new tab"/>
+        <column xsi:type="varchar" name="url" length="255" 
+            comment="Banner Url"/>
+        <column xsi:type="varchar" name="position" length="255" nullable="false" 
+            comment="Banner Position"/>
+        <column xsi:type="text" name="display_on" nullable="false" 
+            comment="Banner Display On"/>
+        <column xsi:type="varchar" name="display_on_page" length="255" nullable="true" 
+            comment="Banner Display On Page"/>
+        <column xsi:type="text" name="display_on_id" nullable="true" 
+            comment="Banner Display On Id"/>
+        <column xsi:type="smallint" name="is_active" unsigned="false" nullable="false" identity="false" default="1" 
+            comment="Is Banner Active"/>
+        <column xsi:type="int" name="sort_order" unsigned="true" nullable="false" identity="false" default="0" 
+            comment="Sort Order"/>
+        <column xsi:type="datetime" name="from_date" nullable="true" 
+            comment="Display From Date"/>
+        <column xsi:type="datetime" name="to_date" nullable="true" 
+            comment="Display To Date"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+            comment="Banner Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+            comment="Banner Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="banner_id"/>
+        </constraint>
+        <index referenceId="BANNER_PWA_POSITION" indexType="btree">
+            <column name="position"/>
+        </index>
+        <index referenceId="BANNER_PWA_NAME_POSITION_TITLE" indexType="fulltext">
+            <column name="name"/>
+            <column name="position"/>
+            <column name="title"/>
+        </index>
+    </table>
+    <table name="banner_pwa_customer_group" resource="default" engine="innodb" comment="Banner To Customer Group Linkage Table">
+        <column xsi:type="int" name="banner_id" unsigned="false" nullable="false" identity="false"
+            comment="Banner ID"/>
+        <column xsi:type="int" name="customer_group_id" unsigned="true" nullable="false" identity="false"
+            comment="Customer Group ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="banner_id"/>
+            <column name="customer_group_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="BANNER_PWA_CUSTOMER_GROUP_BANNER_ID_BANNER_PWA_BANNER_ID" table="banner_pwa_customer_group"
+            column="banner_id" referenceTable="banner_pwa" referenceColumn="banner_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="BANNER_PWA_CUSTOMER_GROUP_CUSTOMER_GROUP_ID_CUSTOMER_GROUP_CUSTOMER_GROUP_ID" table="customer_group"
+            column="customer_group_id" referenceTable="customer_group" referenceColumn="customer_group_id" onDelete="CASCADE"/>
+        <index referenceId="BANNER_PWA_CUSTOMER_GROUP_CUSTOMER_GROUP_ID" indexType="btree">
+            <column name="customer_group_id"/>
+        </index>
+    </table>
+    <table name="banner_pwa_store" resource="default" engine="innodb" comment="Banner To Store Linkage Table">
+        <column xsi:type="int" name="banner_id" unsigned="false" nullable="false" identity="false"
+            comment="Banner ID"/>
+        <column xsi:type="smallint" name="store_id" unsigned="true" nullable="false" identity="false"
+            comment="Store ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="banner_id"/>
+            <column name="store_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="BANNER_PWA_STORE_BANNER_ID_BANNER_PWA_BANNER_ID" table="banner_pwa_store"
+            column="banner_id" referenceTable="banner_pwa" referenceColumn="banner_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="BANNER_PWA_STORE_STORE_ID_STORE_STORE_ID" table="banner_pwa_store"
+            column="store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+        <index referenceId="BANNER_PWA_STORE_STORE_ID" indexType="btree">
+            <column name="store_id"/>
+        </index>
+    </table>
+</schema>

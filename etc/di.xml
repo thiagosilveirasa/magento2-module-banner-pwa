@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="ThiagoSilveira\BannerPWA\Api\Data\BannerSearchResultsInterface"
+        type="ThiagoSilveira\BannerPWA\Model\BannerSearchResults" />
+    <preference for="ThiagoSilveira\BannerPWA\Api\Data\BannerInterface" 
+        type="ThiagoSilveira\BannerPWA\Model\Banner" />
+    <preference for="ThiagoSilveira\BannerPWA\Api\BannerRepositoryInterface" 
+        type="ThiagoSilveira\BannerPWA\Model\BannerRepository" />
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="banner_pwa_listing_data_source" xsi:type="string">ThiagoSilveira\BannerPWA\Model\ResourceModel\Banner\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="ThiagoSilveira\BannerPWA\Model\ResourceModel\Banner\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">banner_pwa</argument>
+            <argument name="eventPrefix" xsi:type="string">banner_pwa_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">banner_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">ThiagoSilveira\BannerPWA\Model\ResourceModel\Banner</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Model\Entity\RepositoryFactory">
+        <arguments>
+            <argument name="entities" xsi:type="array">
+                <item name="ThiagoSilveira\BannerPWA\Api\Data\BannerInterface" xsi:type="string">ThiagoSilveira\BannerPWA\Api\BannerRepositoryInterface</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="ThiagoSilveira\BannerPWA\Api\Data\BannerInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">banner_pwa</item>
+                    <item name="identifierField" xsi:type="string">banner_id</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
+        <arguments>
+            <argument name="extensionActions" xsi:type="array">
+                <item name="ThiagoSilveira\BannerPWA\Api\Data\BannerInterface" xsi:type="array">
+                    <item name="read" xsi:type="array">
+                        <item name="storeReader" xsi:type="string">ThiagoSilveira\BannerPWA\Model\ResourceModel\Banner\Relation\Store\ReadHandler</item>
+                        <item name="customerGroupReader" xsi:type="string">ThiagoSilveira\BannerPWA\Model\ResourceModel\Banner\Relation\CustomerGroup\ReadHandler</item>
+                    </item>
+                    <item name="create" xsi:type="array">
+                        <item name="storeCreator" xsi:type="string">ThiagoSilveira\BannerPWA\Model\ResourceModel\Banner\Relation\Store\SaveHandler</item>
+                        <item name="customerGroupCreator" xsi:type="string">ThiagoSilveira\BannerPWA\Model\ResourceModel\Banner\Relation\CustomerGroup\SaveHandler</item>
+                    </item>
+                    <item name="update" xsi:type="array">
+                        <item name="storeUpdater" xsi:type="string">ThiagoSilveira\BannerPWA\Model\ResourceModel\Banner\Relation\Store\SaveHandler</item>
+                        <item name="customerGroupUpdater" xsi:type="string">ThiagoSilveira\BannerPWA\Model\ResourceModel\Banner\Relation\CustomerGroup\SaveHandler</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\HydratorPool">
+        <arguments>
+            <argument name="hydrators" xsi:type="array">
+                <item name="ThiagoSilveira\BannerPWA\Api\Data\BannerInterface" xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="ThiagoSilveira\BannerPWA\Model\Api\SearchCriteria\CollectionProcessor\BannerFilterProcessor" type="Magento\Framework\Api\SearchCriteria\CollectionProcessor\FilterProcessor">
+        <arguments>
+            <argument name="customFilters" xsi:type="array">
+                <item name="store_id" xsi:type="object">ThiagoSilveira\BannerPWA\Model\Api\SearchCriteria\CollectionProcessor\FilterProcessor\BannerStoreFilter</item>
+                <item name="customer_group_id" xsi:type="object">ThiagoSilveira\BannerPWA\Model\Api\SearchCriteria\CollectionProcessor\FilterProcessor\BannerCustomerGroupFilter</item>
+                <item name="from_date" xsi:type="object">ThiagoSilveira\BannerPWA\Model\Api\SearchCriteria\CollectionProcessor\FilterProcessor\BannerFromDateFilter</item>
+                <item name="to_date" xsi:type="object">ThiagoSilveira\BannerPWA\Model\Api\SearchCriteria\CollectionProcessor\FilterProcessor\BannerToDateFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ThiagoSilveira\BannerPWA\Model\Api\SearchCriteria\BannerCollectionProcessor" type="Magento\Framework\Api\SearchCriteria\CollectionProcessor">
+        <arguments>
+            <argument name="processors" xsi:type="array">
+                <item name="filters" xsi:type="object">ThiagoSilveira\BannerPWA\Model\Api\SearchCriteria\CollectionProcessor\BannerFilterProcessor</item>
+                <item name="sorting" xsi:type="object">Magento\Framework\Api\SearchCriteria\CollectionProcessor\SortingProcessor</item>
+                <item name="pagination" xsi:type="object">Magento\Framework\Api\SearchCriteria\CollectionProcessor\PaginationProcessor</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="ThiagoSilveira\BannerPWA\Model\BannerRepository">
+        <arguments>
+            <argument name="collectionProcessor" xsi:type="object">ThiagoSilveira\BannerPWA\Model\Api\SearchCriteria\BannerCollectionProcessor</argument>
+            <argument name="hydrator" xsi:type="object">Magento\Framework\EntityManager\AbstractModelHydrator</argument>
+        </arguments>
+    </type>
+    <virtualType name="BannerGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">ThiagoSilveira\BannerPWA\Ui\Component\Listing\Filter\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="BannerGridCollectionReporting" type="Magento\Framework\View\Element\UiComponent\DataProvider\Reporting">
+        <arguments>
+            <argument name="filterPool" xsi:type="object">BannerGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ThiagoSilveira\BannerPWA\Ui\Component\Listing\DataProvider"
+            type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="reporting" xsi:type="object">BannerGridCollectionReporting</argument>
+        </arguments>
+    </virtualType>
+    <type name="ThiagoSilveira\BannerPWA\Model\Resolver\DataProvider\Banner">
+        <arguments>
+            <argument name="additionalFilterPool" xsi:type="array">
+                <item name="display_on" xsi:type="object">ThiagoSilveira\BannerPWA\Model\Resolver\Banner\Filters\DisplayOnFilter</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="ThiagoSilveira\BannerPWA\BannerImageUpload" type="ThiagoSilveira\BannerPWA\Model\ImageUploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">bannerpwa/tmp</argument>
+            <argument name="basePath" xsi:type="string">bannerpwa</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+            <argument name="allowedMimeTypes" xsi:type="array">
+                <item name="jpg" xsi:type="string">image/jpg</item>
+                <item name="jpeg" xsi:type="string">image/jpeg</item>
+                <item name="gif" xsi:type="string">image/gif</item>
+                <item name="png" xsi:type="string">image/png</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="ThiagoSilveira\BannerPWA\Controller\Adminhtml\Banner\Image\Upload">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">ThiagoSilveira\BannerPWA\BannerImageUpload</argument>
+        </arguments>
+    </type>
+    <type name="ThiagoSilveira\BannerPWA\Controller\Adminhtml\Banner\Save">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">ThiagoSilveira\BannerPWA\BannerImageUpload</argument>
+        </arguments>
+    </type>
+    <type name="ThiagoSilveira\BannerPWA\Model\UrlInput\DisplayOnPageConfigProvider">
+        <arguments>
+            <argument name="displayOnPageConfiguration" xsi:type="array">
+			    <item name="all_pages" xsi:type="string">ThiagoSilveira\BannerPWA\Ui\Component\Form\UrlInput\AllPages</item>
+                <item name="product" xsi:type="string">ThiagoSilveira\BannerPWA\Ui\Component\Form\UrlInput\Product</item>
+                <item name="category" xsi:type="string">ThiagoSilveira\BannerPWA\Ui\Component\Form\UrlInput\Category</item>
+                <item name="page" xsi:type="string">ThiagoSilveira\BannerPWA\Ui\Component\Form\UrlInput\Page</item>
+                <item name="custom" xsi:type="string">ThiagoSilveira\BannerPWA\Ui\Component\Form\UrlInput\Custom</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
